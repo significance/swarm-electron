@@ -68,6 +68,25 @@ function createWindow () {
 
   workerWindow.webContents.openDevTools()
 
+
+  const { BrowserView } = require('electron')
+
+  let win = new BrowserWindow(
+    { width: 1200, height: 800, nodeIntegration: true,
+      webviewTag: true }
+  )
+  win.on('closed', () => {
+    win = null
+  })
+
+  let view = new BrowserView({ nodeIntegration: true,
+      webviewTag: true })
+  win.setBrowserView(view)
+  view.setBounds({ x: 0, y: 0, width: 1200, height: 800 })
+  setTimeout(()=>{
+    view.webContents.loadURL('http://localhost:8500/')
+  }, 2000)
+
 }
 
 // This method will be called when Electron has finished

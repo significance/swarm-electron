@@ -19,7 +19,7 @@
 		
 		var spawn = require( 'child_process' ).spawn;
 
-		var child = spawn( swarmPath, ["--password=/Users/sig/.bzz/password", "--datadir=~/.bzz", "--enable-pinning", "--verbosity=4", "--store.size=700000"]);
+		var child = spawn( swarmPath, ["--password=/Users/sig/.bzz/password", "--datadir=~/.bzz", "--enable-pinning", "--verbosity=4", "--store.size=700000", "--corsdomain=*"]);
 		child.stdout.on( 'data', data => {
 		     message2UI('swarm', { data: data.toString() });
 		 });

@@ -2,6 +2,12 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 
+const fs = require('fs');
+
+const { menubar } = require('menubar');
+
+const mb = menubar();
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -29,6 +35,12 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  const data = new Uint8Array(Buffer.from('Hello Node.js'));
+  fs.writeFile('message.txt', data, (err) => {
+    if (err) throw err;
+    console.log('The file has been saved!');
+  });
 }
 
 // This method will be called when Electron has finished
@@ -48,6 +60,7 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow()
 })
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

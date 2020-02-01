@@ -18,5 +18,9 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^7.1.1"
+  },
+  "dependencies": {
+    "fds.js": "^0.1.20",
+    "menubar": "^7.0.0"
   }
 }

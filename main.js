@@ -1,16 +1,26 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
-
+const { ipcMain } = require('electron');
 const fs = require('fs');
 
 const { menubar } = require('menubar');
 
 const mb = menubar();
 
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+
+function sendWindowMessage(targetWindow, message, payload) {
+  if(typeof targetWindow === 'undefined') {
+    console.log('Target window does not exist');
+    return;
+  }
+  console.log(message, payload)
+  targetWindow.webContents.send(message, payload);
+}
 
 function createWindow () {
   // Create the browser window.
@@ -26,7 +36,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -36,11 +46,28 @@ function createWindow () {
     mainWindow = null
   })
 
-  const data = new Uint8Array(Buffer.from('Hello Node.js'));
-  fs.writeFile('message.txt', data, (err) => {
-    if (err) throw err;
-    console.log('The file has been saved!');
+  // const data = new Uint8Array(Buffer.from('password'));
+  // //later collect this from the user
+  // fs.writeFile('~/.bzz/password', data, (err) => {
+  //   if (err) throw err;
+  //   console.log('The file has been saved!');
+  // });
+
+  ipcMain.on('message-from-worker', (event, arg) => {
+    console.log(event,arg)
+    sendWindowMessage(mainWindow, 'message-from-worker', arg);
   });
+
+  // create hidden worker window
+  workerWindow = new BrowserWindow({
+    show: true,
+    webPreferences: { nodeIntegration: true }
+  });
+
+  workerWindow.loadFile('worker.html');
+
+  workerWindow.webContents.openDevTools()
+
 }
 
 // This method will be called when Electron has finished

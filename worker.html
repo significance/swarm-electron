@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>I'm a hidden worker</title>
+  </head>
+  <body>
+    <script>
+        const electron = require('electron');
+        const ipcRenderer = electron.ipcRenderer;
+        var message2UI = (command, payload) => {
+          ipcRenderer.send('message-from-worker', {
+            command: command, payload: payload
+          });
+        }
+
+		var appRootDir = require('app-root-dir').get();
+		var swarmPath = appRootDir + '/bin/swarm';
+		
+		var spawn = require( 'child_process' ).spawn;
+
+		var child = spawn( swarmPath, ["--password=/Users/sig/.bzz/password", "--datadir=~/.bzz", "--enable-pinning", "--verbosity=4", "--store.size=700000"]);
+		child.stdout.on( 'data', data => {
+		     message2UI('swarm', { data: data.toString() });
+		 });
+		child.stderr.on( 'data', data => {
+		     message2UI('helloWorld', { data: data.toString() });
+		 });
+
+    </script>
+  </body>
+</html>

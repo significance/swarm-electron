@@ -20,7 +20,20 @@
     "electron": "^7.1.1"
   },
   "dependencies": {
+    "app-root-dir": "^1.0.2",
+    "app-root-path": "^3.0.0",
     "fds.js": "^0.1.20",
     "menubar": "^7.0.0"
+  },
+  "build": {
+    "extraFiles": [
+      {
+        "from": "bin",
+        "to": "bin",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }

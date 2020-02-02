@@ -85,7 +85,7 @@ function createWindow () {
   view.setBounds({ x: 0, y: 0, width: 1200, height: 800 })
   setTimeout(()=>{
     view.webContents.loadURL('http://localhost:8500/')
-  }, 2000)
+  }, 5000)
 
 }
 

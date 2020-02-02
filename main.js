@@ -29,7 +29,8 @@ function createWindow () {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    show: false
   })
 
   // and load the index.html of the app.
@@ -60,7 +61,7 @@ function createWindow () {
 
   // create hidden worker window
   workerWindow = new BrowserWindow({
-    show: true,
+    show: false,
     webPreferences: { nodeIntegration: true }
   });
 
@@ -75,6 +76,9 @@ function createWindow () {
     { width: 1200, height: 800, nodeIntegration: true,
       webviewTag: true }
   )
+  // and load the index.html of the app.
+  mainWindow.loadFile('browser.html')
+
   win.on('closed', () => {
     win = null
   })
